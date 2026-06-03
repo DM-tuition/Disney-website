@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="day">
+<html lang="en" data-theme="day" data-mode="grownup">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -54,6 +54,11 @@
       </nav>
 
       <div class="nav-actions">
+        <div class="mode-switch" id="modeSwitch" title="Switch who's shopping">
+          <button class="mode-opt active" data-mode="grownup">👨‍👩‍👧 Grown-Ups</button>
+          <button class="mode-opt" data-mode="kid">🧒 Kids</button>
+          <span class="mode-glow"></span>
+        </div>
         <button class="theme-toggle" id="themeToggle" title="Day / Night at the Park" aria-label="Toggle theme">
           <span class="theme-icon">☀️</span>
         </button>
@@ -86,8 +91,8 @@
 
       <div class="hero-content">
         <div class="hero-greeting" id="heroGreeting">✨ Welcome to the magic</div>
-        <h1 class="hero-title">Where Shopping<br /><span class="shimmer">Becomes Magic</span></h1>
-        <p class="hero-sub">Step into a reimagined Disney store — personalised, playful and pure wonder. Every click sprinkles a little pixie dust.</p>
+        <h1 class="hero-title" id="heroTitle">The magic you grew up with.<br /><span class="shimmer">The magic they'll grow into.</span></h1>
+        <p class="hero-sub" id="heroSub">One store, two generations. Parents rediscover the classics they loved — kids discover the magic they'll never forget. Shop it together. ✨</p>
         <div class="hero-cta">
           <button class="btn btn-primary" id="startJourney">🪄 Begin Your Journey</button>
           <a href="#shop" class="btn btn-ghost">Explore the Store</a>
@@ -126,6 +131,62 @@
       </div>
 
       <div class="product-grid" id="productGrid"><!-- injected by JS --></div>
+    </section>
+
+    <!-- ===================== MEMORY LANE (NOSTALGIA) ===================== -->
+    <section class="section memory" id="memory">
+      <div class="section-head">
+        <span class="eyebrow">💛 Nostalgia, unlocked</span>
+        <h2>Memory Lane</h2>
+        <p id="memorySub">Grown-ups — which era did your magic begin? Tap your decade and rediscover the classics.</p>
+      </div>
+
+      <div class="era-picker" id="eraPicker">
+        <button class="era-btn" data-era="1970s"><b>1970s</b><small>The classics</small></button>
+        <button class="era-btn" data-era="1980s"><b>1980s</b><small>The renaissance dawn</small></button>
+        <button class="era-btn active" data-era="1990s"><b>1990s</b><small>The golden age</small></button>
+        <button class="era-btn" data-era="2000s"><b>2000s</b><small>The Pixar years</small></button>
+      </div>
+
+      <div class="era-stage" id="eraStage"><!-- injected by JS --></div>
+
+      <!-- Then & Now flip -->
+      <div class="thennow">
+        <h3>Then <span>&amp;</span> Now</h3>
+        <p class="thennow-sub">Same heart. New magic. Hover (or tap) to time-travel.</p>
+        <div class="tn-grid">
+          <div class="tn-card" tabindex="0">
+            <div class="tn-face tn-then"><span class="tn-emoji">🚂</span><b>Steamboat Willie</b><small>1928</small></div>
+            <div class="tn-face tn-now"><span class="tn-emoji">🐭</span><b>Mickey Mouse</b><small>Today</small></div>
+          </div>
+          <div class="tn-card" tabindex="0">
+            <div class="tn-face tn-then"><span class="tn-emoji">📼</span><b>VHS Classics</b><small>The rewind era</small></div>
+            <div class="tn-face tn-now"><span class="tn-emoji">📱</span><b>Stream Anywhere</b><small>Today</small></div>
+          </div>
+          <div class="tn-card" tabindex="0">
+            <div class="tn-face tn-then"><span class="tn-emoji">🎠</span><b>The Carousel</b><small>A first ride</small></div>
+            <div class="tn-face tn-now"><span class="tn-emoji">🎢</span><b>New Adventures</b><small>Today</small></div>
+          </div>
+          <div class="tn-card" tabindex="0">
+            <div class="tn-face tn-then"><span class="tn-emoji">✉️</span><b>Pen-pal Club</b><small>Mailbox magic</small></div>
+            <div class="tn-face tn-now"><span class="tn-emoji">🪄</span><b>Magic Rewards</b><small>Today</small></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Disney through the decades timeline -->
+      <div class="timeline">
+        <h3>Disney through the decades</h3>
+        <div class="timeline-track">
+          <div class="tl-node"><span>🚂</span><b>1928</b><small>Mickey is born</small></div>
+          <div class="tl-node"><span>👑</span><b>1937</b><small>Snow White</small></div>
+          <div class="tl-node"><span>🏰</span><b>1955</b><small>Disneyland opens</small></div>
+          <div class="tl-node"><span>🦁</span><b>1994</b><small>The Lion King</small></div>
+          <div class="tl-node"><span>🤠</span><b>1995</b><small>Toy Story</small></div>
+          <div class="tl-node"><span>❄️</span><b>2013</b><small>Frozen</small></div>
+          <div class="tl-node"><span>✨</span><b>Today</b><small>Your story</small></div>
+        </div>
+      </div>
     </section>
 
     <!-- ===================== GIFT FINDER ===================== -->
@@ -253,7 +314,12 @@
       <div class="section-head">
         <span class="eyebrow">🎓 For the judges</span>
         <h2>The Marketing Behind the Magic</h2>
-        <p>Every feature maps to the <strong>SAVE framework</strong> — the modern evolution of the 4 Ps.</p>
+        <p>Our big idea: <strong>one store, two generations</strong>. We sell to parents on <em>nostalgia</em> and to kids on <em>wonder</em> — then let them shop together. Every feature maps to the <strong>SAVE framework</strong>.</p>
+      </div>
+      <div class="bigidea">
+        <div class="bigidea-card"><span>👨‍👩‍👧</span><h4>Parents buy on emotion</h4><p>Memory Lane &amp; Then-&amp;-Now reignite the Disney they grew up with — nostalgia drives the purchase.</p></div>
+        <div class="bigidea-card"><span>🧒</span><h4>Kids drive the wishlist</h4><p>Kid Mode lets children build a wishlist and "Ask a Grown-Up" — the child influences, the parent approves.</p></div>
+        <div class="bigidea-card"><span>🤝</span><h4>They convert together</h4><p>A single shared journey turns two motivations into one basket. Double the reasons to buy.</p></div>
       </div>
       <div class="save-grid">
         <div class="save-card">

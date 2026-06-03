@@ -34,7 +34,24 @@
     { id: "stitch-mug", name: "Stitch Colour-Change Mug", cat: "home", emoji: "🥤", price: 14, old: 18, rating: "★★★★★ (1.1k)", badge: "Sale", story: "Add a hot drink and watch Stitch appear. Ohana!", world: null },
     { id: "rapunzel-plush", name: "Rapunzel Plush Doll", cat: "plush", emoji: "👸", price: 24, old: null, rating: "★★★★☆ (390)", badge: "New", story: "Let down your hair — beautifully braided detail.", world: "Princess" },
     { id: "mickey-ears", name: "Sparkle Mickey Ears", cat: "apparel", emoji: "🎀", price: 18, old: null, rating: "★★★★★ (3.1k)", badge: "Bestseller", story: "The ultimate park accessory — glitter that never quits.", world: null },
+    // ---- Memory Lane classics (nostalgia) ----
+    { id: "steamboat", name: "Steamboat Willie Plush", cat: "plush", emoji: "🚂", price: 28, old: null, rating: "★★★★★ (210)", badge: "Heritage", story: "Where it all began in 1928 — the original Mickey, reborn in retro felt.", world: null, era: "1970s" },
+    { id: "classic-mickey", name: "Classic Mickey Vinyl Figure", cat: "toys", emoji: "🐭", price: 24, old: null, rating: "★★★★★ (430)", badge: "Heritage", story: "The Mickey you grew up with — pie-eyes and all.", world: null, era: "1970s" },
+    { id: "vintage-poster", name: "Vintage Castle Art Print", cat: "home", emoji: "🖼️", price: 32, old: null, rating: "★★★★★ (180)", badge: "Heritage", story: "A hand-illustrated park poster, straight from the archives.", world: null, era: "1980s" },
+    { id: "duck-tales", name: "Retro Adventure Cap", cat: "apparel", emoji: "🧢", price: 20, old: null, rating: "★★★★☆ (95)", badge: "Heritage", story: "Woo-oo! The throwback cap for 80s cartoon kids.", world: null, era: "1980s" },
+    { id: "lion-vhs", name: "Lion King Anniversary Set", cat: "home", emoji: "🦁", price: 36, old: 42, rating: "★★★★★ (820)", badge: "Heritage", story: "Remember who you are — the 90s classic, beautifully boxed.", world: "The Lion King", era: "1990s" },
+    { id: "retro-ears", name: "Original 90s Mouse Ears", cat: "apparel", emoji: "👂", price: 16, old: null, rating: "★★★★★ (540)", badge: "Heritage", story: "The felt ears every 90s kid wore on the carousel.", world: null, era: "1990s" },
+    { id: "buzz-classic", name: "Original Buzz Lightyear", cat: "toys", emoji: "🚀", price: 40, old: null, rating: "★★★★★ (1.2k)", badge: "Heritage", story: "To infinity — the 1995 toy that started a thousand bedtimes.", world: "Toy Story", era: "2000s" },
+    { id: "nemo-plush", name: "Finding Nemo Plush", cat: "plush", emoji: "🐠", price: 22, old: null, rating: "★★★★★ (610)", badge: "Heritage", story: "Just keep swimming — the 2000s Pixar gem.", world: null, era: "2000s" },
   ];
+
+  // Era → curated nostalgia content
+  const ERAS = {
+    "1970s": { tag: "The Classics", blurb: "Saturday mornings, pie-eyed Mickey and the magic of black-and-white beginnings. This is where your story started.", ids: ["steamboat", "classic-mickey", "castle-lamp", "mickey-plush"] },
+    "1980s": { tag: "The Renaissance Dawn", blurb: "Big hair, bigger adventures. The decade the cartoons came roaring back — and the merch was everything.", ids: ["vintage-poster", "duck-tales", "classic-mickey", "mickey-ears"] },
+    "1990s": { tag: "The Golden Age", blurb: "The Lion King, Toy Story, and a VHS rewinding for the hundredth time. Peak childhood, packaged.", ids: ["lion-vhs", "retro-ears", "woody", "simba-plush"] },
+    "2000s": { tag: "The Pixar Years", blurb: "Nemo, infinity-and-beyond, and the first films you watched on a shiny new DVD. Welcome home.", ids: ["buzz-classic", "nemo-plush", "stitch-mug", "buzz"] },
+  };
   const byId = (id) => PRODUCTS.find((p) => p.id === id);
 
   /* ============================================================
@@ -161,9 +178,13 @@
     const priceHTML = p.old
       ? `<span class="old">${money(p.old)}</span>${money(p.price)}`
       : money(p.price);
+    // p.img (e.g. "images/woody.png") renders a real photo; emoji is the fallback
+    const media = p.img
+      ? `<img src="${p.img}" alt="${p.name}" class="pc-img" loading="lazy" onerror="this.replaceWith(document.createTextNode('${p.emoji}'))">`
+      : p.emoji;
     return `
       <article class="product-card" data-id="${p.id}">
-        <div class="pc-media">${p.emoji}
+        <div class="pc-media">${media}
           <span class="pc-badge ${badgeClass}">${p.badge === "Bestseller" ? "🏆 " : ""}${p.badge}</span>
           <button class="pc-wish ${wished}" data-wish="${p.id}" title="Add to wishlist">${state.wishlist.includes(p.id) ? "💖" : "🤍"}</button>
         </div>
@@ -294,6 +315,14 @@
 
   $("#checkoutBtn").addEventListener("click", () => {
     if (!state.cart.length) { tinkSay("Your bag's empty! Add a little magic first ✨"); openChat(); return; }
+    // KID MODE: pass the basket up to a grown-up instead of buying
+    if (state.mode === "kid") {
+      closeDrawers();
+      burstConfetti(120);
+      showToast("👨‍👩‍👧", "Your wish list was sent to a grown-up to approve! ✨", "Just now");
+      tinkSay("I've sent your magical wish list to a grown-up to make it real! 🪄 Great picks!");
+      return;
+    }
     const earned = Math.round(cartTotal() * 10);
     addPoints(earned);
     state.cart = [];
@@ -597,10 +626,80 @@
   }
 
   /* ============================================================
+     MODE SWITCH — Grown-Ups <-> Kids
+     ============================================================ */
+  const COPY = {
+    grownup: {
+      heroTitle: "The magic you grew up with.<br /><span class='shimmer'>The magic they'll grow into.</span>",
+      heroSub: "One store, two generations. Parents rediscover the classics they loved — kids discover the magic they'll never forget. Shop it together. ✨",
+      memorySub: "Grown-ups — which era did your magic begin? Tap your decade and rediscover the classics.",
+      checkout: "Checkout the Magic ✨",
+    },
+    kid: {
+      heroTitle: "Let's find<br /><span class='shimmer'>YOUR favourite!</span>",
+      heroSub: "Pick your heroes, build a wish list, and ask a grown-up to make it real! Tap anything with a ❤️ to save it. 🪄",
+      memorySub: "Ask a grown-up which decade THEY loved — then show them what you love too!",
+      checkout: "Ask a Grown-Up ✨",
+    },
+  };
+  function setMode(mode) {
+    document.documentElement.setAttribute("data-mode", mode);
+    $$("#modeSwitch .mode-opt").forEach((b) => b.classList.toggle("active", b.dataset.mode === mode));
+    const c = COPY[mode];
+    $("#heroTitle").innerHTML = c.heroTitle;
+    $("#heroSub").textContent = c.heroSub;
+    $("#memorySub").textContent = c.memorySub;
+    $("#checkoutBtn").textContent = c.checkout;
+    state.mode = mode;
+    burstConfetti(60);
+    showToast(mode === "kid" ? "🧒" : "👨‍👩‍👧", mode === "kid" ? "<b>Kids Mode</b> on — let's play!" : "<b>Grown-Ups Mode</b> — welcome back ✨", "Now");
+  }
+  $$("#modeSwitch .mode-opt").forEach((b) =>
+    b.addEventListener("click", () => { if (state.mode !== b.dataset.mode) setMode(b.dataset.mode); })
+  );
+
+  /* ============================================================
+     MEMORY LANE — era selection
+     ============================================================ */
+  function renderEra(era) {
+    const data = ERAS[era];
+    if (!data) return;
+    $("#eraStage").innerHTML = `
+      <div class="era-head"><h3>Welcome to the ${era}</h3><span class="era-tag">${data.tag}</span></div>
+      <p class="era-blurb">"${data.blurb}"</p>
+      <div class="era-products">
+        ${data.ids.map((id) => {
+          const p = byId(id); if (!p) return "";
+          return `<div class="era-prod" data-eid="${id}">
+            <span class="ep-emoji">${p.emoji}</span>
+            <div class="ep-name">${p.name}</div>
+            <div class="ep-price">${money(p.price)}</div>
+            <button class="ep-add" data-eadd="${id}">Add 🛍️</button>
+          </div>`;
+        }).join("")}
+      </div>`;
+    $$("[data-eadd]").forEach((b) => b.addEventListener("click", (e) => {
+      e.stopPropagation();
+      addToCart(b.dataset.eadd);
+      b.textContent = "Added ✓";
+      setTimeout(() => (b.textContent = "Add 🛍️"), 1100);
+    }));
+  }
+  $$("#eraPicker .era-btn").forEach((b) =>
+    b.addEventListener("click", () => {
+      $$("#eraPicker .era-btn").forEach((x) => x.classList.remove("active"));
+      b.classList.add("active");
+      renderEra(b.dataset.era);
+    })
+  );
+
+  /* ============================================================
      INIT
      ============================================================ */
+  state.mode = "grownup";
   renderProducts();
   renderQuiz();
+  renderEra("1990s");
   updateCart();
   updateTiers();
   setupReveal();

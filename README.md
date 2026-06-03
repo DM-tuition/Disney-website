@@ -4,6 +4,18 @@ A demo Disney-store concept built for a **Lancaster University marketing challen
 *"How can Disney improve its online shopping experience?"* — answered through the lens of
 the **SAVE framework** (Solution · Access · Value · Education).
 
+## 🎯 The big idea: nostalgia-max, two generations, one store
+
+Our hook is **"the magic you grew up with — the magic they'll grow into."** The site
+sells to **parents on nostalgia** and **kids on wonder**, then lets them shop together:
+
+- **Grown-Ups ↔ Kids mode switch** (top nav) re-skins and re-words the whole site so a
+  parent and child can use it side by side.
+- **Memory Lane** — pick the decade you grew up in (70s–2000s) and rediscover curated
+  classics, a **Then & Now** flip, and a **Disney-through-the-decades** timeline.
+- **Ask a Grown-Up** — in Kid Mode, children build a wish list and pass it up for a
+  parent to approve. Kids influence, parents purchase.
+
 > Wisney is a fictional, unaffiliated demo built for a student competition.
 
 ## ▶️ How to run it (no install needed)
