@@ -29,6 +29,25 @@ open index.html        # macOS
 python3 -m http.server  # then visit http://localhost:8000
 ```
 
+## 🌍 Immersive themed takeover (the showstopper)
+
+Click **any product** (or a **Shop by World** tile) and the *entire screen transforms
+into that product's universe* — because you don't impulse-buy a toy, you impulse-buy a
+*feeling*:
+
+- **Frozen** → icy Arendelle, falling snow ❄️, cool blue palette
+- **The Lion King** → savanna sunset, drifting paw prints 🐾
+- **Star Wars** → deep space, drifting stars ⭐, that iconic yellow
+- **Marvel** → heroic red, energy bursts 💥
+- **Toy Story** → Andy's cloud-wallpaper sky ☁️
+- **Princess** → enchanted purple & gold 👑
+
+Each world has its own colours, animated particles, tagline, and a **"Complete the
+Collection"** rail to lift basket size. `Esc` or "Exit world" returns you.
+
+**Marketing point for the judges:** themed immersion turns a catalogue into an
+*experience* — it raises emotional engagement, dwell time, and average order value.
+
 ## ✨ The features (and the marketing behind them)
 
 | Feature | What it does | SAVE pillar |

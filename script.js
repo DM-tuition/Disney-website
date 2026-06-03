@@ -201,6 +201,13 @@
       </article>`;
   }
   function bindCards() {
+    // clicking the card body (not the buttons) dives into the immersive world
+    $$(".product-card").forEach((card) =>
+      card.addEventListener("click", (e) => {
+        if (e.target.closest("[data-add],[data-wish]")) return;
+        openTakeover(card.dataset.id);
+      })
+    );
     $$("[data-add]").forEach((b) =>
       b.addEventListener("click", (e) => {
         addToCart(b.dataset.add);
@@ -694,10 +701,213 @@
   );
 
   /* ============================================================
+     WORLD THEMES — each franchise re-skins the takeover
+     ============================================================ */
+  const THEMES = {
+    "Toy Story": { bg: "linear-gradient(170deg,#8fd0ff 0%,#bfe6ff 45%,#7ec0ee 100%)", accent: "#ffd400", text: "#15305a", card: "rgba(255,255,255,.45)", particle: ["☁️","⭐","🤠"], eyebrow: "Andy's Room", vibe: "Reach for the sky — you've got a friend in here." },
+    "Frozen": { bg: "linear-gradient(180deg,#0a2a5e 0%,#2e6fb0 50%,#a7d8f5 100%)", accent: "#9be7ff", text: "#eaf6ff", card: "rgba(255,255,255,.14)", particle: ["❄️","✨","🌨️"], eyebrow: "Arendelle", vibe: "The cold never bothered us anyway." },
+    "The Lion King": { bg: "linear-gradient(180deg,#ff8c1a 0%,#e0541b 45%,#7a2e12 100%)", accent: "#ffd86b", text: "#fff6e6", card: "rgba(0,0,0,.2)", particle: ["🐾","🌅","🦁"], eyebrow: "Pride Rock", vibe: "Remember who you are." },
+    "Star Wars": { bg: "radial-gradient(120% 90% at 50% 10%,#1b2a4a 0%,#05060f 70%)", accent: "#ffe81f", text: "#eef2ff", card: "rgba(255,255,255,.08)", particle: ["⭐","✨","🚀"], eyebrow: "A Galaxy Far Away", vibe: "The Force is strong with this one." },
+    "Marvel": { bg: "linear-gradient(160deg,#2a0a0f 0%,#7a0e16 50%,#ed1d24 100%)", accent: "#ffd54a", text: "#fff", card: "rgba(0,0,0,.25)", particle: ["💥","⚡","🛡️"], eyebrow: "Assemble", vibe: "Heroes wanted. Collection required." },
+    "Princess": { bg: "linear-gradient(170deg,#6a2c8f 0%,#b455a8 45%,#ffd1ec 100%)", accent: "#ffd86b", text: "#fff", card: "rgba(255,255,255,.18)", particle: ["👑","✨","🌹"], eyebrow: "Once Upon a Time", vibe: "Your fairytale awaits." },
+    "_default": { bg: "linear-gradient(160deg,#7b4bff,#ff5fa2 60%,#ffd54a)", accent: "#ffd54a", text: "#fff", card: "rgba(255,255,255,.14)", particle: ["✨","💫","🌟"], eyebrow: "Pure Disney", vibe: "Where shopping becomes magic." },
+  };
+  const themeFor = (world) => THEMES[world] || THEMES._default;
+
+  /* ============================================================
+     IMMERSIVE TAKEOVER
+     ============================================================ */
+  const takeover = $("#takeover");
+  const recentIds = [];
+  let lastFocus = null;
+
+  function spawnParticles(theme) {
+    const layer = $("#takeoverParticles");
+    layer.innerHTML = "";
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const count = reduce ? 0 : 26;
+    for (let i = 0; i < count; i++) {
+      const s = document.createElement("span");
+      s.className = "tk-particle";
+      s.textContent = theme.particle[(Math.random() * theme.particle.length) | 0];
+      s.style.left = Math.random() * 100 + "%";
+      s.style.fontSize = (Math.random() * 1.4 + 0.9) + "rem";
+      s.style.animationDuration = (Math.random() * 6 + 6) + "s";
+      s.style.animationDelay = -(Math.random() * 8) + "s";
+      s.style.opacity = (Math.random() * 0.5 + 0.4).toFixed(2);
+      layer.appendChild(s);
+    }
+  }
+
+  function openTakeover(id) {
+    const p = byId(id);
+    if (!p) return;
+    const theme = themeFor(p.world);
+
+    // paint the world
+    takeover.style.setProperty("--tk-bg", theme.bg);
+    takeover.style.setProperty("--tk-accent", theme.accent);
+    takeover.style.setProperty("--tk-text", theme.text);
+    takeover.style.setProperty("--tk-card", theme.card);
+    spawnParticles(theme);
+
+    // collection = other items from the same world (or some bestsellers)
+    let collection = PRODUCTS.filter((x) => x.world === p.world && x.id !== p.id);
+    if (collection.length < 3) collection = PRODUCTS.filter((x) => x.id !== p.id).slice(0, 6);
+
+    const visual = p.img
+      ? `<img src="${p.img}" alt="${p.name}" onerror="this.replaceWith(document.createTextNode('${p.emoji}'))">`
+      : p.emoji;
+    const priceHTML = p.old ? `<span class="old">${money(p.old)}</span>${money(p.price)}` : money(p.price);
+
+    $("#takeoverInner").innerHTML = `
+      <div class="tk-main tk-enter-anim">
+        <div class="tk-visual">${visual}</div>
+        <div class="tk-info">
+          <span class="tk-eyebrow">✨ ${theme.eyebrow}</span>
+          <h2 class="tk-title">${p.name}</h2>
+          <p class="tk-world">"${theme.vibe}"</p>
+          <p class="tk-story">${p.story}</p>
+          <div class="tk-rating">${p.rating}</div>
+          <div class="tk-price">${priceHTML}</div>
+          <div class="tk-actions">
+            <button class="tk-btn tk-btn-buy" id="tkBuy">${state.mode === "kid" ? "Add to Wish List 🪄" : "Add to Bag 🛍️"}</button>
+            <button class="tk-btn tk-btn-wish" id="tkWish">${state.wishlist.includes(p.id) ? "💖 Saved" : "🤍 Save it"}</button>
+          </div>
+        </div>
+      </div>
+      <div class="tk-collection tk-enter-anim">
+        <h4>✨ Complete the ${p.world || "Disney"} collection</h4>
+        <div class="tk-collection-row">
+          ${collection.map((c) => `
+            <div class="tk-coll-card" data-coll="${c.id}">
+              <div class="tcc-emoji">${c.emoji}</div>
+              <div class="tcc-name">${c.name}</div>
+              <div class="tcc-price">${money(c.price)}</div>
+            </div>`).join("")}
+        </div>
+      </div>`;
+
+    // actions
+    $("#tkBuy").addEventListener("click", () => {
+      if (state.mode === "kid") {
+        if (!state.wishlist.includes(p.id)) toggleWish(p.id);
+        $("#tkBuy").textContent = "On your list ✓";
+      } else {
+        addToCart(p.id);
+        $("#tkBuy").textContent = "Added ✓";
+      }
+      burstConfetti(70);
+    });
+    $("#tkWish").addEventListener("click", () => {
+      toggleWish(p.id);
+      $("#tkWish").innerHTML = state.wishlist.includes(p.id) ? "💖 Saved" : "🤍 Save it";
+    });
+    $$("[data-coll]").forEach((c) => c.addEventListener("click", () => openTakeover(c.dataset.coll)));
+
+    // open
+    lastFocus = document.activeElement;
+    takeover.classList.add("open");
+    takeover.scrollTop = 0;
+    document.body.style.overflow = "hidden";
+    addToRecent(p.id);
+  }
+
+  function closeTakeover() {
+    takeover.classList.remove("open");
+    document.body.style.overflow = "";
+    if (lastFocus) lastFocus.focus();
+  }
+  $("#takeoverExit").addEventListener("click", closeTakeover);
+
+  /* ============================================================
+     RECENTLY WANDERED
+     ============================================================ */
+  function addToRecent(id) {
+    const i = recentIds.indexOf(id);
+    if (i > -1) recentIds.splice(i, 1);
+    recentIds.unshift(id);
+    if (recentIds.length > 8) recentIds.pop();
+    renderRecent();
+  }
+  function renderRecent() {
+    const rail = $("#recentRail");
+    if (!recentIds.length) { rail.hidden = true; return; }
+    rail.hidden = false;
+    $("#recentRow").innerHTML = recentIds.map((id) => {
+      const p = byId(id);
+      return `<div class="recent-card" data-recent="${id}">
+        <div class="rc-emoji">${p.emoji}</div>
+        <div class="rc-name">${p.name}</div>
+        <div class="rc-price">${money(p.price)}</div>
+      </div>`;
+    }).join("");
+    $$("[data-recent]").forEach((c) => c.addEventListener("click", () => openTakeover(c.dataset.recent)));
+  }
+
+  /* ============================================================
+     SHOP BY WORLD tiles
+     ============================================================ */
+  function renderWorlds() {
+    const worlds = ["Toy Story", "Frozen", "The Lion King", "Star Wars", "Marvel", "Princess"];
+    $("#worldGrid").innerHTML = worlds.map((w) => {
+      const t = themeFor(w);
+      const emoji = t.particle[t.particle.length - 1];
+      return `<button class="world-tile" data-world-tile="${w}" style="--wt-bg:${t.bg}">
+        <span class="wt-emoji">${emoji}</span>
+        <span class="wt-name">${w}</span>
+        <span class="wt-vibe">${t.vibe}</span>
+        <span class="wt-enter">Enter this world →</span>
+      </button>`;
+    }).join("");
+    $$("[data-world-tile]").forEach((b) => b.addEventListener("click", () => {
+      const w = b.dataset.worldTile;
+      const lead = PRODUCTS.find((p) => p.world === w);
+      if (lead) openTakeover(lead.id);
+    }));
+  }
+
+  /* ============================================================
+     SEARCH OVERLAY
+     ============================================================ */
+  const searchOverlay = $("#searchOverlay");
+  function openSearch() { searchOverlay.classList.add("open"); $("#searchInput").focus(); runSearch(""); }
+  function closeSearch() { searchOverlay.classList.remove("open"); }
+  $("#searchBtn").addEventListener("click", openSearch);
+  $("#closeSearch").addEventListener("click", closeSearch);
+  searchOverlay.addEventListener("click", (e) => { if (e.target === searchOverlay) closeSearch(); });
+  $("#searchInput").addEventListener("input", (e) => runSearch(e.target.value));
+  function runSearch(q) {
+    q = q.trim().toLowerCase();
+    let list = PRODUCTS;
+    if (q) list = PRODUCTS.filter((p) =>
+      (p.name + " " + p.cat + " " + (p.world || "") + " " + p.story).toLowerCase().includes(q));
+    const wrap = $("#searchResults");
+    if (!list.length) { wrap.innerHTML = `<div class="search-empty">No magic found for "${q}" — try another spell ✨</div>`; return; }
+    wrap.innerHTML = list.slice(0, 8).map((p) => `
+      <div class="search-item" data-search="${p.id}">
+        <div class="si-emoji">${p.emoji}</div>
+        <div class="si-info"><div class="si-name">${p.name}</div><div class="si-meta">${p.world ? p.world + " · " : ""}${p.cat}</div></div>
+        <div class="si-price">${money(p.price)}</div>
+      </div>`).join("");
+    $$("[data-search]").forEach((it) => it.addEventListener("click", () => { closeSearch(); openTakeover(it.dataset.search); }));
+  }
+
+  /* ---------- global ESC to close layers ---------- */
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    if (takeover.classList.contains("open")) return closeTakeover();
+    if (searchOverlay.classList.contains("open")) return closeSearch();
+    if ($("#cartDrawer").classList.contains("open") || $("#wishDrawer").classList.contains("open")) return closeDrawers();
+    if (chatPanel.classList.contains("open")) chatPanel.classList.remove("open");
+  });
+
+  /* ============================================================
      INIT
      ============================================================ */
   state.mode = "grownup";
   renderProducts();
+  renderWorlds();
   renderQuiz();
   renderEra("1990s");
   updateCart();

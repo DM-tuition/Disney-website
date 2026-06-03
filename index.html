@@ -131,6 +131,21 @@
       </div>
 
       <div class="product-grid" id="productGrid"><!-- injected by JS --></div>
+
+      <div class="recent-rail" id="recentRail" hidden>
+        <h3 class="recent-title">🧭 Recently Wandered</h3>
+        <div class="recent-row" id="recentRow"></div>
+      </div>
+    </section>
+
+    <!-- ===================== SHOP BY WORLD (IMMERSIVE) ===================== -->
+    <section class="section worlds" id="worlds">
+      <div class="section-head">
+        <span class="eyebrow">🌍 Step inside the story</span>
+        <h2>Shop by World</h2>
+        <p>Pick a universe and the whole store transforms around you. Don't just shop it — live it.</p>
+      </div>
+      <div class="world-grid" id="worldGrid"><!-- injected by JS --></div>
     </section>
 
     <!-- ===================== MEMORY LANE (NOSTALGIA) ===================== -->
@@ -442,6 +457,25 @@
       <input type="text" id="chatText" placeholder="Ask me anything magical..." />
       <button type="submit">➤</button>
     </form>
+  </div>
+
+  <!-- ===================== IMMERSIVE THEMED TAKEOVER ===================== -->
+  <div class="takeover" id="takeover" role="dialog" aria-modal="true" aria-label="Product world">
+    <div class="takeover-particles" id="takeoverParticles" aria-hidden="true"></div>
+    <button class="takeover-exit" id="takeoverExit" aria-label="Exit world">✕ Exit world</button>
+    <div class="takeover-inner" id="takeoverInner"><!-- injected by JS --></div>
+  </div>
+
+  <!-- ===================== SEARCH OVERLAY ===================== -->
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-box">
+      <div class="search-head">
+        <span class="search-spark">🔍</span>
+        <input type="text" id="searchInput" placeholder="Search the magic… try 'Buzz', 'Frozen', 'plush'" autocomplete="off" />
+        <button class="icon-btn" id="closeSearch" aria-label="Close search">✕</button>
+      </div>
+      <div class="search-results" id="searchResults"></div>
+    </div>
   </div>
 
   <!-- ===================== LIVE SOCIAL-PROOF TOASTS ===================== -->
