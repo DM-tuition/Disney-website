@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="day">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Wisney — Where Shopping Becomes Magic. A reimagined Disney online store experience." />
+  <title>Wisney ✨ Where Shopping Becomes Magic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ===================== PIXIE-DUST LOADER ===================== -->
+  <div id="loader" class="loader">
+    <div class="loader-castle">🏰</div>
+    <div class="loader-text">Sprinkling pixie dust<span class="dots">...</span></div>
+    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+  </div>
+
+  <!-- ===================== SPARKLE CURSOR LAYER ===================== -->
+  <div id="sparkle-layer" aria-hidden="true"></div>
+  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+  <!-- ===================== ANNOUNCEMENT BAR ===================== -->
+  <div class="announce-bar">
+    <div class="announce-track">
+      <span>✨ FREE magical shipping over €50</span>
+      <span>🎁 Earn Pixie Points on every order</span>
+      <span>⏰ Midnight Magic Drop ends in <strong id="countdown">--:--:--</strong></span>
+      <span>🪄 New members get a 10% welcome spell</span>
+      <span>✨ FREE magical shipping over €50</span>
+      <span>🎁 Earn Pixie Points on every order</span>
+      <span>⏰ Midnight Magic Drop ends in <strong>soon</strong></span>
+      <span>🪄 New members get a 10% welcome spell</span>
+    </div>
+  </div>
+
+  <!-- ===================== NAVBAR ===================== -->
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#top" class="logo">
+        <span class="logo-mark">🏰</span>
+        <span class="logo-text">Wisney<span class="logo-dot">✨</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#shop">Shop</a>
+        <a href="#giftfinder">Gift Finder</a>
+        <a href="#ar">Try at Home</a>
+        <a href="#rewards">Magic Rewards</a>
+        <a href="#strategy" class="nav-strategy">🎓 The Strategy</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" title="Day / Night at the Park" aria-label="Toggle theme">
+          <span class="theme-icon">☀️</span>
+        </button>
+        <button class="icon-btn" id="searchBtn" title="Search" aria-label="Search">🔍</button>
+        <button class="icon-btn" id="wishlistBtn" title="Wishlist" aria-label="Wishlist">
+          ❤️<span class="badge" id="wishCount">0</span>
+        </button>
+        <button class="icon-btn rewards-chip" id="rewardsBtn" title="Pixie Points">
+          <span class="pixie">🪄</span><span id="pointsCount">0</span> pts
+        </button>
+        <button class="icon-btn cart-btn" id="cartBtn" title="Cart" aria-label="Cart">
+          🛍️<span class="badge" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ===================== HERO ===================== -->
+    <section class="hero">
+      <div class="hero-sky">
+        <div class="star s1"></div><div class="star s2"></div><div class="star s3"></div>
+        <div class="star s4"></div><div class="star s5"></div><div class="star s6"></div>
+        <div class="shooting-star"></div>
+        <div class="hero-moon">🌙</div>
+      </div>
+      <div class="hero-castle">🏰</div>
+      <div class="hero-hills"></div>
+
+      <div class="hero-content">
+        <div class="hero-greeting" id="heroGreeting">✨ Welcome to the magic</div>
+        <h1 class="hero-title">Where Shopping<br /><span class="shimmer">Becomes Magic</span></h1>
+        <p class="hero-sub">Step into a reimagined Disney store — personalised, playful and pure wonder. Every click sprinkles a little pixie dust.</p>
+        <div class="hero-cta">
+          <button class="btn btn-primary" id="startJourney">🪄 Begin Your Journey</button>
+          <a href="#shop" class="btn btn-ghost">Explore the Store</a>
+        </div>
+        <div class="hero-stats">
+          <div><strong id="liveViewers">1,284</strong><span>guests in the park</span></div>
+          <div><strong>4.9★</strong><span>magical rating</span></div>
+          <div><strong>2M+</strong><span>dreams delivered</span></div>
+        </div>
+      </div>
+      <div class="scroll-hint">Scroll for wonder ↓</div>
+    </section>
+
+    <!-- ===================== TRUST STRIP ===================== -->
+    <section class="trust-strip">
+      <div class="trust-item">🚚 Free magical shipping €50+</div>
+      <div class="trust-item">↩️ 100-day happy returns</div>
+      <div class="trust-item">🎁 Free gift wrapping</div>
+      <div class="trust-item">🔒 Secure pixie checkout</div>
+    </section>
+
+    <!-- ===================== BESTSELLERS / SHOP ===================== -->
+    <section class="section" id="shop">
+      <div class="section-head">
+        <span class="eyebrow">🏆 Loved by families</span>
+        <h2>Bestselling Magic</h2>
+        <p>Handpicked favourites, ready to bring a story home.</p>
+      </div>
+
+      <div class="chips" id="filterChips">
+        <button class="chip active" data-filter="all">All</button>
+        <button class="chip" data-filter="toys">Toys</button>
+        <button class="chip" data-filter="plush">Plush</button>
+        <button class="chip" data-filter="apparel">Apparel</button>
+        <button class="chip" data-filter="home">Home</button>
+      </div>
+
+      <div class="product-grid" id="productGrid"><!-- injected by JS --></div>
+    </section>
+
+    <!-- ===================== GIFT FINDER ===================== -->
+    <section class="section giftfinder" id="giftfinder">
+      <div class="section-head">
+        <span class="eyebrow">🪄 Guided by magic</span>
+        <h2>The Magic Gift Finder</h2>
+        <p>Answer three tiny questions and we'll conjure the perfect gift.</p>
+      </div>
+
+      <div class="quiz-card" id="quizCard">
+        <div class="quiz-progress"><div class="quiz-progress-fill" id="quizFill"></div></div>
+        <div id="quizStage"><!-- injected --></div>
+      </div>
+    </section>
+
+    <!-- ===================== AR / TRY AT HOME ===================== -->
+    <section class="section ar" id="ar">
+      <div class="ar-grid">
+        <div class="ar-copy">
+          <span class="eyebrow">📱 Innovation</span>
+          <h2>See the magic in <em>your</em> room</h2>
+          <p>Point, place and preview. Our Augmented Reality preview lets you drop any character right onto your shelf before you buy — no more guessing on size.</p>
+          <ul class="ar-list">
+            <li>✨ True-to-size 3D preview</li>
+            <li>🛋️ Works on any wall, shelf or desk</li>
+            <li>📸 Snap & share to your story</li>
+          </ul>
+          <button class="btn btn-primary" id="arBtn">📲 Launch AR Preview</button>
+        </div>
+        <div class="ar-stage" id="arStage">
+          <div class="ar-room">
+            <div class="ar-shelf"></div>
+            <div class="ar-figure" id="arFigure">🤠</div>
+            <div class="ar-reticle"></div>
+            <div class="ar-scanline"></div>
+          </div>
+          <div class="ar-hint">Tap a character to place it ↓</div>
+          <div class="ar-picker">
+            <button data-emoji="🤠">🤠</button>
+            <button data-emoji="🚀">🚀</button>
+            <button data-emoji="🐻">🐻</button>
+            <button data-emoji="👸">👸</button>
+            <button data-emoji="🦁">🦁</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SPIN THE WHEEL ===================== -->
+    <section class="section spin-section">
+      <div class="section-head">
+        <span class="eyebrow">🎡 Gamified delight</span>
+        <h2>Spin the Pixie Wheel</h2>
+        <p>One free spin a day — win points, discounts &amp; magical surprises.</p>
+      </div>
+      <div class="spin-wrap">
+        <div class="wheel-pointer">▼</div>
+        <div class="wheel" id="wheel">
+          <div class="wheel-center">✨</div>
+        </div>
+        <button class="btn btn-primary" id="spinBtn">SPIN!</button>
+        <div class="spin-result" id="spinResult"></div>
+      </div>
+    </section>
+
+    <!-- ===================== REWARDS / LOYALTY ===================== -->
+    <section class="section rewards" id="rewards">
+      <div class="section-head">
+        <span class="eyebrow">👑 Loyalty that feels like magic</span>
+        <h2>Wisney Magic Rewards</h2>
+        <p>Collect Pixie Points, climb the kingdom and unlock royal perks.</p>
+      </div>
+
+      <div class="tier-track">
+        <div class="tier-bar"><div class="tier-bar-fill" id="tierFill"></div></div>
+        <div class="tier-nodes">
+          <div class="tier-node" data-tier="0"><span>🌱</span><b>Dreamer</b><small>0 pts</small></div>
+          <div class="tier-node" data-tier="500"><span>🎭</span><b>Explorer</b><small>500 pts</small></div>
+          <div class="tier-node" data-tier="1500"><span>⭐</span><b>Star</b><small>1,500 pts</small></div>
+          <div class="tier-node" data-tier="3000"><span>👑</span><b>Royalty</b><small>3,000 pts</small></div>
+        </div>
+      </div>
+
+      <div class="perk-grid">
+        <div class="perk"><span>🎂</span><h4>Birthday Magic</h4><p>A surprise drop every birthday.</p></div>
+        <div class="perk"><span>🚪</span><h4>Early Access</h4><p>Shop drops before anyone else.</p></div>
+        <div class="perk"><span>🎟️</span><h4>Park Perks</h4><p>Points convert to park treats.</p></div>
+        <div class="perk"><span>🪄</span><h4>Double-Point Days</h4><p>Members earn twice the magic.</p></div>
+      </div>
+      <div class="rewards-cta">
+        <button class="btn btn-primary" id="earnPointsBtn">🪄 Earn 100 Pixie Points</button>
+      </div>
+    </section>
+
+    <!-- ===================== SOCIAL PROOF / TESTIMONIALS ===================== -->
+    <section class="section testimonials">
+      <div class="section-head">
+        <span class="eyebrow">💬 Magical moments</span>
+        <h2>Loved by dreamers everywhere</h2>
+      </div>
+      <div class="testi-grid">
+        <div class="testi"><div class="stars">★★★★★</div><p>"My daughter gasped when Buzz appeared on her shelf in AR. We bought him on the spot!"</p><span>— Priya, Manchester</span></div>
+        <div class="testi"><div class="stars">★★★★★</div><p>"The Gift Finder nailed it. Found the perfect present in under a minute."</p><span>— Tom, Leeds</span></div>
+        <div class="testi"><div class="stars">★★★★★</div><p>"Pixie Points make every order feel like a little win. I'm officially Royalty now 👑"</p><span>— Aisha, London</span></div>
+      </div>
+    </section>
+
+    <!-- ===================== NEWSLETTER ===================== -->
+    <section class="section newsletter" id="newsletter">
+      <div class="news-card">
+        <div class="news-spark">🎆</div>
+        <h2>Join the Magic List</h2>
+        <p>Get a <strong>10% welcome spell</strong>, early drops &amp; stories straight to your inbox.</p>
+        <form class="news-form" id="newsForm">
+          <input type="email" placeholder="your@magic.email" required />
+          <button class="btn btn-primary" type="submit">Cast the Spell ✨</button>
+        </form>
+        <small class="news-note">No spam. Just sparkle. Unsubscribe anytime.</small>
+      </div>
+    </section>
+
+    <!-- ===================== STRATEGY (FOR JUDGES) ===================== -->
+    <section class="section strategy" id="strategy">
+      <div class="section-head">
+        <span class="eyebrow">🎓 For the judges</span>
+        <h2>The Marketing Behind the Magic</h2>
+        <p>Every feature maps to the <strong>SAVE framework</strong> — the modern evolution of the 4 Ps.</p>
+      </div>
+      <div class="save-grid">
+        <div class="save-card">
+          <h3><span>S</span>olution</h3>
+          <p class="save-old">was: Product</p>
+          <ul>
+            <li>🪄 Magic Gift Finder solves "what do I buy?"</li>
+            <li>📱 AR Try-at-Home removes purchase doubt</li>
+            <li>🎯 Personalised greeting &amp; recommendations</li>
+          </ul>
+        </div>
+        <div class="save-card">
+          <h3><span>A</span>ccess</h3>
+          <p class="save-old">was: Place</p>
+          <ul>
+            <li>📲 Seamless, one-page digital journey</li>
+            <li>🛍️ Slide-out cart &amp; free-shipping nudge</li>
+            <li>💬 Tinker Bell live help, always on hand</li>
+          </ul>
+        </div>
+        <div class="save-card">
+          <h3><span>V</span>alue</h3>
+          <p class="save-old">was: Price</p>
+          <ul>
+            <li>👑 Magic Rewards builds lifetime value</li>
+            <li>🎡 Pixie Wheel turns price into play</li>
+            <li>🎁 Perks &amp; experiences, not just discounts</li>
+          </ul>
+        </div>
+        <div class="save-card">
+          <h3><span>E</span>ducation</h3>
+          <p class="save-old">was: Promotion</p>
+          <ul>
+            <li>📖 Storytelling product cards</li>
+            <li>💬 Social proof &amp; live activity</li>
+            <li>📧 Magic List nurtures the relationship</li>
+          </ul>
+        </div>
+      </div>
+      <p class="strategy-foot">Team <strong>Pixel Pixies</strong> ✨ — reimagining the Disney store as a destination, not a transaction.</p>
+    </section>
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo-mark">🏰</span>
+        <span class="logo-text">Wisney<span class="logo-dot">✨</span></span>
+        <p>Where shopping becomes magic.</p>
+      </div>
+      <div class="footer-col"><h5>Shop</h5><a href="#shop">Bestsellers</a><a href="#shop">New Arrivals</a><a href="#giftfinder">Gift Finder</a></div>
+      <div class="footer-col"><h5>Magic</h5><a href="#rewards">Rewards</a><a href="#ar">Try at Home</a><a href="#newsletter">Magic List</a></div>
+      <div class="footer-col"><h5>Help</h5><a href="#">Shipping</a><a href="#">Returns</a><a href="#">Contact</a></div>
+    </div>
+    <div class="footer-bar">Made with ✨ for a marketing challenge · Wisney is a fictional demo, not affiliated with Disney.</div>
+  </footer>
+
+  <!-- ===================== CART DRAWER ===================== -->
+  <div class="drawer-overlay" id="overlay"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart">
+    <div class="cart-head">
+      <h3>🛍️ Your Magic Bag</h3>
+      <button class="icon-btn" id="closeCart" aria-label="Close">✕</button>
+    </div>
+    <div class="ship-nudge">
+      <div class="ship-text" id="shipText">Add €50 for FREE shipping ✨</div>
+      <div class="ship-bar"><div class="ship-bar-fill" id="shipFill"></div></div>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-foot">
+      <div class="cart-total-row"><span>Total</span><strong id="cartTotal">€0.00</strong></div>
+      <div class="cart-points-row">You'll earn <strong id="cartPoints">0</strong> 🪄 Pixie Points</div>
+      <button class="btn btn-primary btn-block" id="checkoutBtn">Checkout the Magic ✨</button>
+    </div>
+  </aside>
+
+  <!-- ===================== WISHLIST DRAWER ===================== -->
+  <aside class="cart-drawer wish-drawer" id="wishDrawer" aria-label="Wishlist">
+    <div class="cart-head">
+      <h3>❤️ Your Wishlist</h3>
+      <button class="icon-btn" id="closeWish" aria-label="Close">✕</button>
+    </div>
+    <div class="cart-items" id="wishItems"></div>
+  </aside>
+
+  <!-- ===================== PERSONALISATION MODAL ===================== -->
+  <div class="modal-overlay" id="personaOverlay">
+    <div class="modal persona-modal">
+      <div class="persona-spark">✨</div>
+      <h2>Choose Your Magic</h2>
+      <p>Pick a world and we'll personalise your journey.</p>
+      <div class="persona-grid" id="personaGrid">
+        <button data-world="Toy Story" data-emoji="🤠">🤠<span>Toy Story</span></button>
+        <button data-world="Princess" data-emoji="👸">👸<span>Princess</span></button>
+        <button data-world="Marvel" data-emoji="🦸">🦸<span>Marvel</span></button>
+        <button data-world="Star Wars" data-emoji="🚀">🚀<span>Star Wars</span></button>
+        <button data-world="The Lion King" data-emoji="🦁">🦁<span>Lion King</span></button>
+        <button data-world="Frozen" data-emoji="❄️">❄️<span>Frozen</span></button>
+      </div>
+      <div class="persona-name">
+        <input type="text" id="personaName" placeholder="Your name (optional)" maxlength="20" />
+      </div>
+      <button class="btn btn-ghost persona-skip" id="personaSkip">Skip for now</button>
+    </div>
+  </div>
+
+  <!-- ===================== TINKER BELL CHAT ===================== -->
+  <button class="chat-fab" id="chatFab" title="Ask Tinker Bell">🧚</button>
+  <div class="chat-panel" id="chatPanel">
+    <div class="chat-head"><span>🧚 Tinker Bell</span><button class="icon-btn" id="closeChat" aria-label="Close">✕</button></div>
+    <div class="chat-body" id="chatBody"></div>
+    <div class="chat-quick" id="chatQuick">
+      <button>Track my order</button>
+      <button>Gift ideas?</button>
+      <button>How do points work?</button>
+      <button>Shipping &amp; returns</button>
+    </div>
+    <form class="chat-input" id="chatForm">
+      <input type="text" id="chatText" placeholder="Ask me anything magical..." />
+      <button type="submit">➤</button>
+    </form>
+  </div>
+
+  <!-- ===================== LIVE SOCIAL-PROOF TOASTS ===================== -->
+  <div class="toast-stack" id="toastStack"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
