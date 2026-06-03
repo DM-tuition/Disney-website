@@ -72,7 +72,7 @@
   let lastSpark = 0;
   document.addEventListener("pointermove", (e) => {
     const now = Date.now();
-    if (now - lastSpark < 45) return;
+    if (now - lastSpark < 70) return;
     lastSpark = now;
     const s = document.createElement("span");
     s.className = "spark";
@@ -631,6 +631,15 @@
       { duration: 350, easing: "ease" }
     );
   }
+
+  /* ============================================================
+     MARKETING LENS — reveal / hide the lever annotations
+     ============================================================ */
+  $("#lensToggle").addEventListener("click", () => {
+    const on = document.body.classList.toggle("lens-on");
+    $("#lensToggle").classList.toggle("active", on);
+    if (on) showToast("🎓", "<b>Marketing Lens on</b> — every feature now shows its lever", "Presenter mode");
+  });
 
   /* ============================================================
      MODE SWITCH — Grown-Ups <-> Kids

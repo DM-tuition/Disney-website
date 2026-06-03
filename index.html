@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="lens-on">
 
   <!-- ===================== PIXIE-DUST LOADER ===================== -->
   <div id="loader" class="loader">
@@ -59,6 +59,9 @@
           <button class="mode-opt" data-mode="kid">🧒 Kids</button>
           <span class="mode-glow"></span>
         </div>
+        <button class="lens-toggle active" id="lensToggle" title="Show the marketing thinking behind each feature">
+          <span class="lens-dot"></span>🎓 Marketing Lens
+        </button>
         <button class="theme-toggle" id="themeToggle" title="Day / Night at the Park" aria-label="Toggle theme">
           <span class="theme-icon">☀️</span>
         </button>
@@ -120,6 +123,7 @@
         <span class="eyebrow">🏆 Loved by families</span>
         <h2>Bestselling Magic</h2>
         <p>Handpicked favourites, ready to bring a story home.</p>
+        <div class="mkt-tag"><span class="mkt-lever">🏆 Social Proof &amp; Merchandising</span> Bestseller badges + ratings reduce risk and steer the eye. <span class="mkt-save">SAVE · Education</span></div>
       </div>
 
       <div class="chips" id="filterChips">
@@ -144,6 +148,7 @@
         <span class="eyebrow">🌍 Step inside the story</span>
         <h2>Shop by World</h2>
         <p>Pick a universe and the whole store transforms around you. Don't just shop it — live it.</p>
+        <div class="mkt-tag"><span class="mkt-lever">🎭 Experiential &amp; Emotional Branding</span> Immersion raises dwell time, engagement and average order value. <span class="mkt-save">SAVE · Solution</span></div>
       </div>
       <div class="world-grid" id="worldGrid"><!-- injected by JS --></div>
     </section>
@@ -154,6 +159,7 @@
         <span class="eyebrow">💛 Nostalgia, unlocked</span>
         <h2>Memory Lane</h2>
         <p id="memorySub">Grown-ups — which era did your magic begin? Tap your decade and rediscover the classics.</p>
+        <div class="mkt-tag"><span class="mkt-lever">💛 Nostalgia Marketing</span> An emotional trigger aimed at the parent — the one holding the wallet. <span class="mkt-save">SAVE · Education</span></div>
       </div>
 
       <div class="era-picker" id="eraPicker">
@@ -210,6 +216,7 @@
         <span class="eyebrow">🪄 Guided by magic</span>
         <h2>The Magic Gift Finder</h2>
         <p>Answer three tiny questions and we'll conjure the perfect gift.</p>
+        <div class="mkt-tag"><span class="mkt-lever">🎯 Guided Selling &amp; Personalisation</span> Cuts choice overload and walks the shopper to "buy". <span class="mkt-save">SAVE · Solution</span></div>
       </div>
 
       <div class="quiz-card" id="quizCard">
@@ -225,6 +232,7 @@
           <span class="eyebrow">📱 Innovation</span>
           <h2>See the magic in <em>your</em> room</h2>
           <p>Point, place and preview. Our Augmented Reality preview lets you drop any character right onto your shelf before you buy — no more guessing on size.</p>
+          <div class="mkt-tag"><span class="mkt-lever">🛡️ Reduce Purchase Risk</span> Try-before-you-buy lifts confidence and cuts costly returns. <span class="mkt-save">SAVE · Access</span></div>
           <ul class="ar-list">
             <li>✨ True-to-size 3D preview</li>
             <li>🛋️ Works on any wall, shelf or desk</li>
@@ -257,6 +265,7 @@
         <span class="eyebrow">🎡 Gamified delight</span>
         <h2>Spin the Pixie Wheel</h2>
         <p>One free spin a day — win points, discounts &amp; magical surprises.</p>
+        <div class="mkt-tag"><span class="mkt-lever">🎮 Gamification</span> A daily reason to return — drives habit, repeat visits and retention. <span class="mkt-save">SAVE · Value</span></div>
       </div>
       <div class="spin-wrap">
         <div class="wheel-pointer">▼</div>
@@ -274,6 +283,7 @@
         <span class="eyebrow">👑 Loyalty that feels like magic</span>
         <h2>Wisney Magic Rewards</h2>
         <p>Collect Pixie Points, climb the kingdom and unlock royal perks.</p>
+        <div class="mkt-tag"><span class="mkt-lever">👑 Loyalty &amp; Lifetime Value</span> Points + tiers turn one sale into a long-term relationship. <span class="mkt-save">SAVE · Value</span></div>
       </div>
 
       <div class="tier-track">
@@ -302,6 +312,7 @@
       <div class="section-head">
         <span class="eyebrow">💬 Magical moments</span>
         <h2>Loved by dreamers everywhere</h2>
+        <div class="mkt-tag"><span class="mkt-lever">🗣️ Social Proof &amp; UGC</span> Real voices build trust at the moment of decision. <span class="mkt-save">SAVE · Education</span></div>
       </div>
       <div class="testi-grid">
         <div class="testi"><div class="stars">★★★★★</div><p>"My daughter gasped when Buzz appeared on her shelf in AR. We bought him on the spot!"</p><span>— Priya, Manchester</span></div>
@@ -321,6 +332,7 @@
           <button class="btn btn-primary" type="submit">Cast the Spell ✨</button>
         </form>
         <small class="news-note">No spam. Just sparkle. Unsubscribe anytime.</small>
+        <div class="mkt-tag mkt-tag-light"><span class="mkt-lever">📩 Lead Capture &amp; CRM</span> Owning the email list enables retargeting and repeat sales we don't pay for twice. <span class="mkt-save">SAVE · Education</span></div>
       </div>
     </section>
 
@@ -403,6 +415,7 @@
     <div class="ship-nudge">
       <div class="ship-text" id="shipText">Add €50 for FREE shipping ✨</div>
       <div class="ship-bar"><div class="ship-bar-fill" id="shipFill"></div></div>
+      <div class="mkt-tag mkt-tag-mini"><span class="mkt-lever">🛒 Order-Value Nudge</span> Pushes basket size toward the free-shipping threshold.</div>
     </div>
     <div class="cart-items" id="cartItems"></div>
     <div class="cart-foot">

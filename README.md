@@ -29,6 +29,16 @@ open index.html        # macOS
 python3 -m http.server  # then visit http://localhost:8000
 ```
 
+## 🎓 Marketing Lens (point this out to the judges)
+
+Use the **Marketing Lens** toggle in the top nav. When on (the default), every feature
+carries a labelled tag naming the exact **marketing lever**, the **benefit**, and the
+**SAVE pillar** it serves — e.g. *Guided Selling*, *Nostalgia Marketing*, *Loyalty &
+Lifetime Value*, *Reduce Purchase Risk*. Toggle it off for a clean customer view.
+
+This makes the strategy unmistakable: it's not just a pretty site, every element is
+there for a measurable commercial reason (conversion, AOV, retention, trust).
+
 ## 🌍 Immersive themed takeover (the showstopper)
 
 Click **any product** (or a **Shop by World** tile) and the *entire screen transforms

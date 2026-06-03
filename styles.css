@@ -4,33 +4,37 @@
    ============================================================ */
 
 :root {
-  --royal: #0a1e5e;
+  --royal: #0e1c4a;
   --royal-2: #15308a;
-  --gold: #ffd54a;
-  --gold-deep: #f2a900;
-  --pink: #ff5fa2;
-  --purple: #7b4bff;
-  --sky-1: #bfe3ff;
-  --sky-2: #e9d5ff;
-  --sky-3: #ffe1ec;
-  --ink: #1b1340;
-  --muted: #6b6390;
+  --gold: #f3c969;
+  --gold-deep: #c98a16;
+  --pink: #e0518f;
+  --purple: #6a44d9;
+  --sky-1: #d4e6fb;
+  --sky-2: #e7ddfb;
+  --sky-3: #fbe8f1;
+  --ink: #181231;
+  --muted: #726a8e;
+  --line: rgba(24, 18, 49, 0.08);
   --card: #ffffff;
-  --bg: #fff7fb;
-  --shadow: 0 18px 50px rgba(40, 20, 90, 0.14);
-  --radius: 22px;
-  --magic-grad: linear-gradient(120deg, #7b4bff, #ff5fa2 45%, #ffd54a);
+  --bg: #faf8ff;
+  --shadow: 0 10px 34px rgba(30, 18, 70, 0.08);
+  --shadow-lg: 0 22px 60px rgba(30, 18, 70, 0.14);
+  --radius: 18px;
+  --magic-grad: linear-gradient(120deg, #6a44d9, #c0468a 55%, #d99a3e);
 }
 
 [data-theme="night"] {
   --sky-1: #0a0f3c;
   --sky-2: #1a1356;
   --sky-3: #2a1a5e;
-  --bg: #0c0a2a;
-  --card: #181544;
+  --bg: #0b0922;
+  --card: #161334;
   --ink: #f3eeff;
   --muted: #a99ed8;
-  --shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+  --line: rgba(255, 255, 255, 0.08);
+  --shadow: 0 10px 34px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 22px 60px rgba(0, 0, 0, 0.5);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -43,9 +47,12 @@ body {
   color: var(--ink);
   overflow-x: hidden;
   transition: background .5s ease, color .5s ease;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-h1, h2, h3, h4, h5, .logo-text { font-family: "Baloo 2", system-ui, sans-serif; }
+h1, h2, h3, h4, h5, .logo-text { font-family: "Baloo 2", system-ui, sans-serif; letter-spacing: -0.01em; }
+h2 { line-height: 1.08; }
 
 a { color: inherit; text-decoration: none; }
 
@@ -104,8 +111,8 @@ a { color: inherit; text-decoration: none; }
    ============================================================ */
 #sparkle-layer { position: fixed; inset: 0; pointer-events: none; z-index: 9000; }
 .spark {
-  position: fixed; width: 12px; height: 12px; pointer-events: none;
-  font-size: 12px; animation: sparkFade .8s ease forwards; will-change: transform, opacity;
+  position: fixed; width: 10px; height: 10px; pointer-events: none;
+  font-size: 10px; opacity: .7; animation: sparkFade .7s ease forwards; will-change: transform, opacity;
 }
 @keyframes sparkFade {
   0% { transform: translateY(0) scale(1) rotate(0); opacity: 1; }
@@ -117,10 +124,10 @@ a { color: inherit; text-decoration: none; }
    ANNOUNCEMENT BAR
    ============================================================ */
 .announce-bar {
-  background: var(--royal); color: #fff; overflow: hidden; white-space: nowrap;
-  font-size: .9rem; padding: 9px 0; position: relative;
+  background: var(--royal); color: rgba(255,255,255,.92); overflow: hidden; white-space: nowrap;
+  font-size: .78rem; letter-spacing: .03em; padding: 8px 0; position: relative;
 }
-.announce-track { display: inline-flex; gap: 48px; padding-left: 48px; animation: marquee 26s linear infinite; }
+.announce-track { display: inline-flex; gap: 54px; padding-left: 54px; animation: marquee 30s linear infinite; }
 .announce-track span { display: inline-flex; align-items: center; gap: 6px; }
 .announce-track strong { color: var(--gold); }
 @keyframes marquee { to { transform: translateX(-50%); } }
@@ -285,6 +292,47 @@ a { color: inherit; text-decoration: none; }
 .section-head h2 { font-size: clamp(2rem, 5vw, 3rem); color: var(--ink); }
 .section-head p { color: var(--muted); margin-top: 8px; font-size: 1.05rem; }
 
+/* ============================================================
+   MARKETING LENS — labelled levers on each feature
+   ============================================================ */
+.lens-toggle {
+  display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line);
+  background: var(--card); color: var(--muted); border-radius: 99px; padding: 8px 14px;
+  font-family: "Baloo 2", sans-serif; font-weight: 700; font-size: .8rem; cursor: pointer;
+  transition: all .2s; white-space: nowrap;
+}
+.lens-toggle .lens-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); transition: background .2s, box-shadow .2s; }
+.lens-toggle:hover { border-color: var(--purple); color: var(--ink); }
+.lens-toggle.active { background: linear-gradient(120deg, rgba(106,68,217,.12), rgba(192,70,138,.1)); color: var(--purple); border-color: rgba(106,68,217,.3); }
+.lens-toggle.active .lens-dot { background: #38c172; box-shadow: 0 0 0 3px rgba(56,193,114,.2); }
+
+/* the tags themselves */
+.mkt-tag {
+  display: none; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
+  margin: 16px auto 0; max-width: 680px; padding: 9px 16px; border-radius: 12px;
+  background: linear-gradient(120deg, rgba(106,68,217,.07), rgba(192,70,138,.06));
+  border: 1px dashed rgba(106,68,217,.32); color: var(--muted);
+  font-size: .82rem; line-height: 1.45; text-align: center;
+}
+.lens-on .mkt-tag { display: flex; animation: tagIn .4s ease both; }
+@keyframes tagIn { from { opacity: 0; transform: translateY(-6px); } }
+.mkt-lever {
+  font-family: "Baloo 2", sans-serif; font-weight: 800; color: var(--purple);
+  background: var(--card); padding: 3px 11px; border-radius: 99px; border: 1px solid rgba(106,68,217,.2);
+  white-space: nowrap;
+}
+.mkt-save {
+  font-weight: 700; color: #fff; background: var(--royal); padding: 3px 10px;
+  border-radius: 99px; font-size: .72rem; letter-spacing: .02em; white-space: nowrap;
+}
+/* placement tweaks */
+.ar-copy .mkt-tag { margin-left: 0; margin-right: 0; text-align: left; justify-content: flex-start; }
+.mkt-tag-light { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.4); color: rgba(255,255,255,.92); }
+.mkt-tag-light .mkt-lever { background: rgba(255,255,255,.2); color: #fff; border-color: rgba(255,255,255,.4); }
+.mkt-tag-light .mkt-save { background: rgba(0,0,0,.3); }
+.mkt-tag-mini { margin-top: 10px; padding: 7px 12px; font-size: .74rem; }
+.mkt-tag-mini .mkt-lever { font-size: .74rem; padding: 2px 9px; }
+
 /* ---------- Filter chips ---------- */
 .chips { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 36px; }
 .chip {
@@ -299,16 +347,16 @@ a { color: inherit; text-decoration: none; }
 .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 22px; }
 .product-card {
   background: var(--card); border-radius: var(--radius); overflow: hidden;
-  box-shadow: var(--shadow); position: relative; transition: transform .25s, box-shadow .25s;
-  display: flex; flex-direction: column;
+  box-shadow: var(--shadow); border: 1px solid var(--line); position: relative;
+  transition: transform .25s, box-shadow .25s; display: flex; flex-direction: column; cursor: pointer;
 }
-.product-card:hover { transform: translateY(-8px); box-shadow: 0 28px 60px rgba(123,75,255,.28); }
+.product-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: transparent; }
 .pc-media {
   position: relative; height: 200px; display: flex; align-items: center; justify-content: center;
-  font-size: 5.5rem; background: radial-gradient(120% 120% at 50% 20%, rgba(255,213,74,.25), rgba(123,75,255,.08));
-  transition: transform .3s;
+  font-size: 5.5rem; background: radial-gradient(120% 120% at 50% 20%, rgba(243,201,105,.16), rgba(106,68,217,.05));
+  transition: transform .35s;
 }
-.product-card:hover .pc-media { transform: scale(1.07) rotate(-2deg); }
+.product-card:hover .pc-media { transform: scale(1.05); }
 .pc-img { max-height: 170px; max-width: 88%; object-fit: contain; filter: drop-shadow(0 10px 14px rgba(40,20,90,.18)); }
 .pc-badge {
   position: absolute; top: 12px; left: 12px; background: var(--royal); color: #fff;
